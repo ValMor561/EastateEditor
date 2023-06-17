@@ -9,7 +9,6 @@ class Auth:
         self.root.title('Авторизация')
         self.BD = BDRequests()
         self.AuthWindow()
-        self.root.mainloop()
         
 
     def login(self):
@@ -42,10 +41,11 @@ class Auth:
     def registration(self):
         self.message_label.grid_forget()
         self.title_label.configure(text='Регистрация')
-        self.login_button.grid_forget()
-        self.reg_button.grid_forget()
         self.signup_button = ttk.Button(self.login_frame, text='Зарегестрироваться',bootstyle="success", command=self.signup)
+        self.auth_button = ttk.Button(self.login_frame, text='На страницу входа',bootstyle="info", command=self.AuthWindow)
         self.signup_button.grid(row=6,columnspan=2,sticky="ew",pady=(10,0))
+        self.auth_button.grid(row=7,columnspan=2,sticky="ew",pady=5)
+
 
     def ClearWindow(self):
         for widget in self.root.winfo_children():
