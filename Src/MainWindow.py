@@ -4,10 +4,11 @@ from bdrequests import BDRequests
 import AuthWindow 
 
 class MainWindow:
-    def __init__(self, root):
+    def __init__(self, root, username):
         self.root = root
         self.root.title('Недвижимость')
-        
+        self.username = username
+        self.BD = BDRequests()
         self.SearchFrame()
         self.NotebookWindow()
         
@@ -35,6 +36,7 @@ class MainWindow:
 
 
     def logout(self):
+        self.BD.audit(self.username,"Выход")
         self.ClearWindow()
         AU = AuthWindow.Auth(self.root)
         AU.AuthWindow()
@@ -44,7 +46,11 @@ class MainWindow:
             search_frame.pack(side=tk.TOP, fill=tk.X)
             
             logoutbutton = ttk.Button(search_frame, text="Выход", bootstyle="danger", command=self.logout)
-            logoutbutton.pack(side=tk.RIGHT, padx=(5,10))
+            logoutbutton.pack(side=tk.RIGHT, padx=(0,10))
+            
+            usernamebtn = ttk.Button(search_frame, text=self.username, bootstyle="success",padding=(30,5,30,5), state='disabled')
+            usernamebtn.pack(side=tk.RIGHT)
+            
 
             ttk.Button(search_frame, text="Найти").pack(side=tk.RIGHT, pady=5)
             

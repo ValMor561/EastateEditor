@@ -16,24 +16,22 @@ class Auth:
         password = self.password_entry.get()
         auth_result = self.BD.auth(login,password)
         if auth_result:
-            print("Авторизация прошла успешно")
+            self.BD.audit(login, "Вход")            
             self.ClearWindow()
-            MainWindow(self.root)
+            MainWindow(self.root, login)
         else:
+            self.BD.audit(self.login, "Не удачная попытка входа")
             self.message_label.configure(text="Неправильный логин или пароль")
             self.message_label.grid(row=2,columnspan=2)
-
-            print("Неправильный логин или пароль")
 
     def signup(self):
         login = self.login_entry.get()
         password = self.password_entry.get()
         reg_result = self.BD.signup(login,password)
         if reg_result:
-            print("Авторизация прошла успешно")
+            self.BD.audit(login, "Регистрация пользователя")
             self.ClearWindow()
-            MainWindow(self.root)
-
+            MainWindow(self.root, login)
         else:
             self.message_label.configure(text="Пользователь уже существует")
             self.message_label.grid(row=2,columnspan=2)

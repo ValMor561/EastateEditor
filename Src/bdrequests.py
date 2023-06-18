@@ -15,6 +15,12 @@ class BDRequests():
         cur.close()
         return auth_result
 
+    def audit(self,username, event_type):
+        cur = self.conn.cursor()
+        cur.callproc("log_audit", [username, event_type])
+        self.conn.commit()
+        cur.close()
+
     def signup(self, login, password):
         cur = self.conn.cursor()
         cur.execute("SELECT register_user(%s, %s)", (login, password))
