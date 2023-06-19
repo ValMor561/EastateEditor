@@ -13,28 +13,28 @@ class MainWindow:
         self.SearchFrame()
         self.NotebookWindow()
         
-        
     def NotebookWindow(self):
+        self.tab = ttk.Notebook(self.root,bootstyle="success")
+        self.tab.pack(fill='both', expand=True)
 
-        tab = ttk.Notebook(bootstyle="success")
         entities = {'Объекты недвижимости' : ['Адресс', 'Площадь', 'Тип объекта', 'Район', 'Город', 'Фамилия владельца', 'Имя владельца'], 'Данные клиентов' : ['Фамилия', 'Имя', 'Номер паспорта','Код отделения', 'Дата рождения', 'Город', 'Возраст', 'Семейное положение'], 'Сотрудники':['Фамилия', 'Имя', 'Имя компании']}
         for entity in entities:
-            frame = ttk.Frame(tab)
-            tab.add(frame,text=entity)
+            self.frame = ttk.Frame(self.tab)
+            self.tab.add(self.frame,text=entity)
 
-            data_grid = ttk.Treeview(frame, columns=entities[entity],show='headings',bootstyle='light')
+            self.data_grid = ttk.Treeview(self.frame, columns=entities[entity],show='headings',bootstyle='light')
+            
 
             for col in entities[entity]:
-                data_grid.heading(col, text=col)
-                data_grid.column(col, anchor="center")
-            
+                self.data_grid.heading(col, text=col)
+                self.data_grid.column(col, anchor="center")
+
             data = self.BD.get_REO(self.page)
             for row in data:
-                data_grid.insert('', tk.END, values=row)
-
-            data_grid.pack(fill=tk.BOTH, expand=True)
+                self.data_grid.insert('', tk.END, values=row[1:])
+            self.PageButtons()
+            self.data_grid.pack(fill='both', expand=True)
         
-        tab.pack(fill=tk.BOTH, expand=True)
 
     def ClearWindow(self):
         for widget in self.root.winfo_children():
@@ -46,6 +46,31 @@ class MainWindow:
         self.ClearWindow()
         AU = AuthWindow.Auth(self.root)
         AU.AuthWindow()
+
+    def PageButtons(self):
+        page_frame = ttk.Frame(self.data_grid)
+        page_frame.pack(side="bottom")
+
+
+        self.prev_button = tk.Button(page_frame, text="< Предыдующая", command=self.prev_page)
+        self.prev_button.pack(side=tk.LEFT)
+
+        self.page_label = tk.Label(page_frame, text=self.page)
+        self.page_label.pack(side=tk.LEFT)
+
+        self.next_button = tk.Button(page_frame, text="Следующая >", command=self.next_page)
+        self.next_button.pack(side=tk.LEFT)
+
+    def prev_page(self):
+        if self.page > 1:
+            self.page -= 1
+            self.tab.destroy()
+            self.NotebookWindow()
+
+    def next_page(self):
+        self.page += 1
+        self.tab.destroy()
+        self.NotebookWindow()
 
     def SearchFrame(self):
             search_frame = ttk.Frame()
