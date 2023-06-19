@@ -20,7 +20,7 @@ class Auth:
             self.ClearWindow()
             MainWindow(self.root, login)
         else:
-            self.BD.audit(self.login, "Не удачная попытка входа")
+            self.BD.audit(login, "Не удачная попытка входа")
             self.message_label.configure(text="Неправильный логин или пароль")
             self.message_label.grid(row=2,columnspan=2)
 

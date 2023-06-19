@@ -29,30 +29,10 @@ class BDRequests():
         cur.close()
         return reg_result
     
-    def get_REO(self, page):
+    def get_data(self, page, function):
         cur = self.conn.cursor()
-        # Вызов функции курсора для первой страницы (page_num=1)
-        cur.execute('SELECT * FROM get_real_estate(%s)', (page,)) 
+        cur.execute(f'SELECT * FROM {function}(%s)', (page,)) 
         results = cur.fetchall()
-        # Закрытие соединения с базой данных
-        cur.close()
-        return results
-    
-    def get_PASS(self, page):
-        cur = self.conn.cursor()
-        # Вызов функции курсора для первой страницы (page_num=1)
-        cur.execute('SELECT * FROM get_passport_client(%s)', (page,)) 
-        results = cur.fetchall()
-        # Закрытие соединения с базой данных
-        cur.close()
-        return results
-    
-    def get_EM(self, page):
-        cur = self.conn.cursor()
-        # Вызов функции курсора для первой страницы (page_num=1)
-        cur.execute('SELECT * FROM get_employee(%s)', (page,)) 
-        results = cur.fetchall()
-        # Закрытие соединения с базой данных
         cur.close()
         return results
     
