@@ -28,3 +28,12 @@ class BDRequests():
         self.conn.commit()
         cur.close()
         return reg_result
+    
+    def get_REO(self, page):
+        cur = self.conn.cursor()
+        # Вызов функции курсора для первой страницы (page_num=1)
+        cur.execute('SELECT * FROM get_real_estate_data(%s)', (page,)) 
+        results = cur.fetchall()
+        # Закрытие соединения с базой данных
+        cur.close()
+        return results

@@ -9,6 +9,7 @@ class MainWindow:
         self.root.title('Недвижимость')
         self.username = username
         self.BD = BDRequests()
+        self.page = 1
         self.SearchFrame()
         self.NotebookWindow()
         
@@ -24,8 +25,13 @@ class MainWindow:
             data_grid = ttk.Treeview(frame, columns=entities[entity],show='headings',bootstyle='light')
 
             for col in entities[entity]:
-                data_grid.heading(col, text=col)    
-                
+                data_grid.heading(col, text=col)
+                data_grid.column(col, anchor="center")
+            
+            data = self.BD.get_REO(self.page)
+            for row in data:
+                data_grid.insert('', tk.END, values=row)
+
             data_grid.pack(fill=tk.BOTH, expand=True)
         
         tab.pack(fill=tk.BOTH, expand=True)
