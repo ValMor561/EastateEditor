@@ -1,11 +1,12 @@
 import tkinter as tk
 import ttkbootstrap as ttk
 
-class EditForm(tk.Toplevel):
+class EditOrAddForm(tk.Toplevel):
     def __init__(self, columns, row_values):
         super().__init__()
+        self.resizable(width=False, height=False)
 
-        self.title("Edit Form")
+        self.title("Форма Изменения/Добавления")
         # Создаем поля формы на основе переданных колонок и значений строки
         self.entries = []
         for col, val in zip(columns, row_values):
@@ -17,7 +18,7 @@ class EditForm(tk.Toplevel):
             self.entries.append(entry)
 
         # Добавляем кнопку "Сохранить"
-        save_button = tk.Button(self, text="Изменить", command=self.save)
+        save_button = tk.Button(self, text="Сохранить", command=self.save)
         save_button.grid(row=len(self.entries), columnspan=2, padx=5, pady=5)
 
     def save(self):

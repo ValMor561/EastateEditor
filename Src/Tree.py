@@ -1,7 +1,7 @@
 import tkinter as tk
 import ttkbootstrap as ttk
 from bdrequests import BDRequests
-from Edit import EditForm
+from EditOrAdd import EditOrAddForm  
 
 class Tree():
     def __init__(self,frame, columns, page, function):
@@ -48,7 +48,8 @@ class Tree():
         row_values = self.tree.item(row_id)['values']
         print(row_values)
         popMenu = tk.Menu()
-        popMenu.add_command(label="Edit", command=lambda: self.OpenEditForm(self.columns[1:], row_values[1:]))
+        popMenu.add_command(label="Add", command=lambda: self.OpenForm(self.columns[1:], [""]*len(self.columns)))
+        popMenu.add_command(label="Edit", command=lambda: self.OpenForm(self.columns[1:], row_values[1:]))
         popMenu.add_command(label="Delete") 
         popMenu.post(event.x_root, event.y_root)
 
@@ -69,8 +70,8 @@ class Tree():
         self.Tree()
         self.PageButtons()
     
-    def OpenEditForm(self, columns, row_values):
+    def OpenForm(self, columns, row_values):
         # Создаем окно и отображаем форму редактирования
-        edit_form = EditForm(columns, row_values)
+        edit_form = EditOrAddForm(columns, row_values)
         edit_form.grab_set()
         edit_form.wait_window()
