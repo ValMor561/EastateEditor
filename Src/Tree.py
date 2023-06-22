@@ -15,8 +15,7 @@ class Tree():
         
     def Tree(self):
         self.tree = ttk.Treeview(self.frame, columns=self.columns,show='headings',bootstyle='light')
-        self.tree.heading("hidden", text="Hidden Column")
-        for col in self.columns[1:]:
+        for col in self.columns:
             self.tree.heading(col, text=col)
             self.tree.column(col, anchor="center")
         self.tree['displaycolumns'] = self.columns[1:]
