@@ -4,14 +4,16 @@ from bdrequests import BDRequests
 from EditOrAdd import EditOrAddForm  
 
 class Tree():
-    def __init__(self,frame, columns, page, function):
+    def __init__(self,frame, columns, page, function, entity):
         self.frame = frame
-        self.function = function
+        self.datafunction = function
         self.columns = columns
         self.page = page
+        self.entity = entity
         self.BD = BDRequests()
         self.Tree()
         self.PageButtons()
+        
         
     def Tree(self):
         self.tree = ttk.Treeview(self.frame, columns=self.columns,show='headings',bootstyle='light')
@@ -20,7 +22,7 @@ class Tree():
             self.tree.column(col, anchor="center")
         self.tree['displaycolumns'] = self.columns[1:]
 
-        data = self.BD.get_data(self.page, self.function)
+        data = self.BD.get_data(self.page, self.datafunction)
         for row in data:
             self.tree.insert('', tk.END, values=row)
 
@@ -47,8 +49,8 @@ class Tree():
         row_values = self.tree.item(row_id)['values']
         print(row_values)
         popMenu = tk.Menu()
-        popMenu.add_command(label="Add", command=lambda: self.OpenForm(self.columns[1:], [""]*len(self.columns)))
-        popMenu.add_command(label="Edit", command=lambda: self.OpenForm(self.columns[1:], row_values[1:]))
+        popMenu.add_command(label="Add", command=lambda: self.OpenForm([""]*len(self.columns)))
+        popMenu.add_command(label="Edit", command=lambda: self.OpenForm(row_values))
         popMenu.add_command(label="Delete") 
         popMenu.post(event.x_root, event.y_root)
 
@@ -69,8 +71,14 @@ class Tree():
         self.Tree()
         self.PageButtons()
     
-    def OpenForm(self, columns, row_values):
+    def OpenForm(self, row_values):
         # Создаем окно и отображаем форму редактирования
-        edit_form = EditOrAddForm(columns, row_values)
+        edit_form = EditOrAddForm(row_values)
+        functions = {'Объекты недвижимости' : edit_form.Eastate, 'Данные клиентов' : edit_form.Client, 'Контракты' : edit_form.Contract, 'Сотрудники': edit_form.Employee}
+        functions[self.entity]()
+        #edit_form.Eastate()
+        #edit_form.Client()
+        #edit_form.Contract()
+        #edit_form.Employee()
         edit_form.grab_set()
         edit_form.wait_window()

@@ -36,3 +36,9 @@ class BDRequests():
         cur.close()
         return results
     
+    def getValues(self, function):
+        cur = self.conn.cursor()
+        cur.execute(f'SELECT * FROM {function}()') 
+        results = cur.fetchall()
+        cur.close()
+        return results
