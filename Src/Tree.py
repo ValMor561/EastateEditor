@@ -4,9 +4,10 @@ from bdrequests import BDRequests
 from EditOrAdd import EditOrAddForm  
 
 class Tree():
-    def __init__(self,frame, columns, page, function, entity):
+    def __init__(self,frame, columns, page, functions, entity):
         self.frame = frame
-        self.datafunction = function
+        self.datafunction = functions[0]
+        self.deletefunction = functions[1]
         self.columns = columns
         self.page = page
         self.entity = entity
@@ -51,7 +52,7 @@ class Tree():
         popMenu = tk.Menu()
         popMenu.add_command(label="Add", command=lambda: self.OpenForm([""]*len(self.columns)))
         popMenu.add_command(label="Edit", command=lambda: self.OpenForm(row_values))
-        popMenu.add_command(label="Delete") 
+        popMenu.add_command(label="Delete", command=lambda: self.Delete(row_values[0])) 
         popMenu.post(event.x_root, event.y_root)
 
     def ClearFrame(self):
@@ -72,13 +73,12 @@ class Tree():
         self.PageButtons()
     
     def OpenForm(self, row_values):
-        # Создаем окно и отображаем форму редактирования
         edit_form = EditOrAddForm(row_values)
         functions = {'Объекты недвижимости' : edit_form.Eastate, 'Данные клиентов' : edit_form.Client, 'Контракты' : edit_form.Contract, 'Сотрудники': edit_form.Employee}
         functions[self.entity]()
-        #edit_form.Eastate()
-        #edit_form.Client()
-        #edit_form.Contract()
-        #edit_form.Employee()
         edit_form.grab_set()
         edit_form.wait_window()
+    
+    def Delete(self, id):
+        self.tree.delete(self.tree.selection())
+        self.BD.delete_data(self.deletefunction, id)

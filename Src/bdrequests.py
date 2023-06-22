@@ -36,6 +36,13 @@ class BDRequests():
         cur.close()
         return results
     
+    def delete_data(self, function, id):
+        cur = self.conn.cursor()
+        cur.callproc(function, [id])
+        self.conn.commit()
+        cur.close()
+
+
     def getValues(self, function):
         cur = self.conn.cursor()
         cur.execute(f'SELECT * FROM {function}()') 
