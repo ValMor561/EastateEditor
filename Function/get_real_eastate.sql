@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION get_real_estate(page_num integer)
+CREATE OR REPLACE FUNCTION get_real_eastate(page_num integer)
 RETURNS TABLE (
 	objectid integer,
     address text,
@@ -15,6 +15,6 @@ BEGIN
         FROM "RealEastateObject" reo
         JOIN "District" d ON reo."DistrictId" = d."DistrictId"
         JOIN "PassportClient" pc ON reo."OwnerPassportNumber" = pc."PassportNumber"
-        ORDER BY reo."ObjectId" OFFSET (page_num - 1) * 55 LIMIT 55;
+        ORDER BY reo."ObjectId" OFFSET (page_num - 1) * 59 LIMIT 59;
 END;
 $$ LANGUAGE plpgsql;
