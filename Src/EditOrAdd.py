@@ -4,14 +4,15 @@ from bdrequests import BDRequests
 from datetime import datetime
 
 class EditOrAddForm(tk.Toplevel):
-    def __init__(self, row_values):
+    def __init__(self, row_values, function):
         super().__init__()
         self.resizable(width=False, height=False)
         self.title("Форма Изменения/Добавления")
-        self.id = row_values[:1]
+        self.id = row_values[0]
         self.values = row_values[1:]
+        self.updatefunction = function
         self.BD = BDRequests()
-        # Создаем поля формы на основе переданных колонок и значений строки
+        self.entries = []
     
     def Contract(self):
         self.LabelCalendar("Дата контракта", 0)
@@ -29,6 +30,9 @@ class EditOrAddForm(tk.Toplevel):
         self.LabelEntry("Фамилия", 0)
         self.LabelEntry("Имя", 1)
         self.LabelDropMenu("Имя компании", "get_company_name", 2)
+
+        save_button = tk.Button(self, text="Сохранить", command=self.save)
+        save_button.grid(row=5, columnspan=2, padx=5, pady=5)
 
     def Client(self):
         columns = ['Фамилия', 'Имя', 'Номер паспорта','Код отделения'] 
@@ -49,7 +53,7 @@ class EditOrAddForm(tk.Toplevel):
     def Eastate(self):
         self.LabelEntry("Адресс", 0)
         self.LabelEntry("Площадь", 1)
-        self.LabelEntry("Тип объекта", 2)
+        self.LabelDropMenu("Тип объекта", "get_object_type",2)
         self.LabelDropMenu("Номер района", "get_districtid", 3)
         self.LabelDropMenu("Паcпорт владельца", "get_passports", 4)
         
@@ -59,11 +63,14 @@ class EditOrAddForm(tk.Toplevel):
     def LabelCalendar(self, text, index):
         label = tk.Label(self, text=text)
         label.grid(row=index, column=0, padx=5, pady=5)
+
         if self.values[index] == "":
             self.values[index] = datetime.now().strftime("%Y-%m-%d")
+
         data_entry = ttk.DateEntry(self, startdate=datetime.strptime(self.values[index], "%Y-%m-%d"))
         data_entry.configure(state="readonly")
         data_entry.grid(row=index, column=1, padx=5, pady=5)
+        self.entries.append(data_entry)
         return data_entry
 
     def LabelDropMenu(self, text, functions, index):
@@ -72,6 +79,7 @@ class EditOrAddForm(tk.Toplevel):
         options = self.BD.getValues(functions)
         dropdown = ttk.Combobox(self, values=options,  height=4, state="readonly")
         dropdown.grid(row=index, column=1, padx=5, pady=5)
+        self.entries.append(dropdown)
         return dropdown
 
     def LabelEntry(self, text, index):
@@ -80,10 +88,18 @@ class EditOrAddForm(tk.Toplevel):
         entry = tk.Entry(self)
         entry.insert(0, self.values[index])
         entry.grid(row=index, column=1, padx=5, pady=5)
+        self.entries.append(entry)
         return entry
 
     def save(self):
         # Собираем значения из полей формы и передаем их обратно в основное окно
-        values = [entry.get() for entry in self.entries]
+        values = []
+        for entry in self.entries:
+            if isinstance(entry, ttk.DateEntry):
+                values.append(entry.entry.get())
+                continue
+            values.append(entry.get())
+        self.BD.edit_data(self.updatefunction, self.id, values)
+        print(values)
         self.destroy()
         return values

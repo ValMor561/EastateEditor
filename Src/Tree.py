@@ -8,6 +8,7 @@ class Tree():
         self.frame = frame
         self.datafunction = functions[0]
         self.deletefunction = functions[1]
+        self.updatefunction = functions[2]
         self.columns = columns
         self.page = page
         self.entity = entity
@@ -73,11 +74,13 @@ class Tree():
         self.PageButtons()
     
     def OpenForm(self, row_values):
-        edit_form = EditOrAddForm(row_values)
+        edit_form = EditOrAddForm(row_values, self.updatefunction)
         functions = {'Объекты недвижимости' : edit_form.Eastate, 'Данные клиентов' : edit_form.Client, 'Контракты' : edit_form.Contract, 'Сотрудники': edit_form.Employee}
         functions[self.entity]()
         edit_form.grab_set()
         edit_form.wait_window()
+        self.ClearFrame()
+        self.Tree()
     
     def Delete(self, id):
         self.tree.delete(self.tree.selection())

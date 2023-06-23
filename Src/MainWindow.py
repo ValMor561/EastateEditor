@@ -19,7 +19,7 @@ class MainWindow:
         self.notebook.pack(fill='both', expand=True)
 
         entities = {'Объекты недвижимости' : ["ObjectId",'Адресс', 'Площадь', 'Тип объекта', 'Район', 'Город', 'Фамилия владельца', 'Имя владельца'], 'Данные клиентов' : ["PsId", 'Фамилия', 'Имя', 'Номер паспорта','Код отделения', 'Дата рождения', 'Город', 'Возраст', 'Семейное положение'], 'Контракты' : ["ContacrId", 'Дата подписания', 'Дата выплаты', 'Стоимость', 'Тип контракта','Фамилия риелтора', 'Фамилия владельца', 'Имя владельца', 'Фамилия покупателя', 'Имя покупателя'], 'Сотрудники': ["Id", 'Фамилия', 'Имя', 'Имя компании']}
-        function = {'Объекты недвижимости' : ['get_real_eastate','delete_eastate'], 'Данные клиентов' : ['get_passport_client', 'delete_client'], 'Контракты' : ['get_contract','delete_contract'], 'Сотрудники': ['get_employee','delete_employee']}
+        function = {'Объекты недвижимости' : ['get_real_eastate', 'delete_eastate', 'update_real_estate_object'], 'Данные клиентов' : ['get_passport_client', 'delete_client', 'update_passport'], 'Контракты' : ['get_contract','delete_contract', 'update_contract'], 'Сотрудники': ['get_employee','delete_employee', 'update_employee']}
         for entity in entities:
             self.frame = ttk.Frame(self.notebook)
             self.notebook.add(self.frame,text=entity)

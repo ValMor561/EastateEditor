@@ -42,10 +42,17 @@ class BDRequests():
         self.conn.commit()
         cur.close()
 
+    def edit_data(self, function, id, values):
+        cur = self.conn.cursor()
+        print([id] + values)
+        cur.callproc(function, [id] + values)
+        self.conn.commit()
+        cur.close()
 
     def getValues(self, function):
         cur = self.conn.cursor()
-        cur.execute(f'SELECT * FROM {function}()') 
+        cur.execute(f'SELECT * FROM {function}();') 
         results = cur.fetchall()
+        res  = [val1[0] for val1 in results]
         cur.close()
-        return results
+        return res
