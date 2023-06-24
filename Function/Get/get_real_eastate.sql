@@ -15,6 +15,6 @@ BEGIN
         FROM "RealEastateObject" reo
         JOIN "District" d ON reo."DistrictId" = d."DistrictId"
         JOIN "PassportClient" pc ON reo."OwnerPassportNumber" = pc."PassportNumber"
-        ORDER BY reo."ObjectId" OFFSET (page_num - 1) * 59 LIMIT 59;
+        ORDER BY reo."ObjectId" DESC OFFSET (page_num - 1) * 59 LIMIT 59;
 END;
 $$ LANGUAGE plpgsql;

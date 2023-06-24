@@ -44,8 +44,14 @@ class BDRequests():
 
     def edit_data(self, function, id, values):
         cur = self.conn.cursor()
-        print([id] + values)
         cur.callproc(function, [id] + values)
+        self.conn.commit()
+        cur.close()
+
+    
+    def add_data(self, function, values):
+        cur = self.conn.cursor()
+        cur.callproc(function, values)
         self.conn.commit()
         cur.close()
 

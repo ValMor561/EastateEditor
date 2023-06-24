@@ -4,13 +4,14 @@ from bdrequests import BDRequests
 from datetime import datetime
 
 class EditOrAddForm(tk.Toplevel):
-    def __init__(self, row_values, function):
+    def __init__(self, row_values, updatefunction, addfunction):
         super().__init__()
         self.resizable(width=False, height=False)
         self.title("Форма Изменения/Добавления")
         self.id = row_values[0]
         self.values = row_values[1:]
-        self.updatefunction = function
+        self.updatefunction = updatefunction
+        self.addfunction = addfunction
         self.BD = BDRequests()
         self.entries = []
     
@@ -92,14 +93,15 @@ class EditOrAddForm(tk.Toplevel):
         return entry
 
     def save(self):
-        # Собираем значения из полей формы и передаем их обратно в основное окно
         values = []
         for entry in self.entries:
             if isinstance(entry, ttk.DateEntry):
                 values.append(entry.entry.get())
                 continue
             values.append(entry.get())
-        self.BD.edit_data(self.updatefunction, self.id, values)
-        print(values)
+        if self.id != "":
+            self.BD.edit_data(self.updatefunction, self.id, values)
+        else:
+            self.BD.add_data(self.addfunction, values)
         self.destroy()
         return values
