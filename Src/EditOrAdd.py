@@ -43,13 +43,14 @@ class EditOrAddForm(tk.Toplevel):
             i += 1
         self.LabelCalendar("Дата рождения", i)
         i += 1
-        columns = ['Город', 'Возраст', 'Семейное положение']
+        columns = ['Город', 'Возраст']
         for col in columns:
             self.LabelEntry(col,i)
             i += 1
-        
+        self.LabelDropMenu("Семейное положение", "get_family", i)
+
         save_button = tk.Button(self, text="Сохранить", command=self.save)
-        save_button.grid(row=i, columnspan=2, padx=5, pady=5)
+        save_button.grid(row=i+1, columnspan=2, padx=5, pady=5)
 
     def Eastate(self):
         self.LabelEntry("Адресс", 0)
