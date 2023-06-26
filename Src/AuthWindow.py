@@ -56,6 +56,7 @@ class Auth:
         self.login_label = tk.Label(self.login_frame, text='Имя пользователя', font=('Arial', 14))
         self.message_label = ttk.Label(self.login_frame, text="",bootstyle="danger")
         self.login_entry = tk.Entry(self.login_frame, font=('Arial', 14))
+        self.GetLastLogin()
         self.password_label = tk.Label(self.login_frame, text='Пароль', font=('Arial', 14))
         self.password_entry = tk.Entry(self.login_frame, font=('Arial', 14), show='*')
         self.login_button = ttk.Button(self.login_frame, text='Войти',bootstyle="success", command=self.login)
@@ -71,3 +72,7 @@ class Auth:
 
         self.login_frame.place(relx=0.5, rely=0.4, anchor=tk.CENTER)
 
+    def GetLastLogin(self):
+        login = self.BD.get_login()[0]
+        if login != None:
+            self.login_entry.insert(0, login)

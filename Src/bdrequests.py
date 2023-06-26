@@ -62,3 +62,10 @@ class BDRequests():
         res  = [val1[0] for val1 in results]
         cur.close()
         return res
+    
+    def get_login(self):
+        cur = self.conn.cursor()
+        cur.execute(f'SELECT * FROM get_last_login();') 
+        result = cur.fetchall()[0]
+        cur.close()
+        return result
