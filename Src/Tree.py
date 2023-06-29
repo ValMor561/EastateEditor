@@ -2,6 +2,7 @@ import tkinter as tk
 import ttkbootstrap as ttk
 from bdrequests import BDRequests
 from EditOrAdd import EditOrAddForm  
+import re
 
 class Tree():
     def __init__(self,frame, columns, page, functions, entity):
@@ -27,6 +28,11 @@ class Tree():
 
         data = self.BD.get_data(self.page, self.datafunction)
         for row in data:
+            if self.entity == 'Контракты':
+                row = list(row)
+                row[5] = re.sub(r'[\(\)"\']+','',row[5])
+                row[5] = row[5].replace(",", " ")
+
             self.tree.insert('', tk.END, values=row)
 
         self.tree.bind("<Button-3>", lambda event: self.PopMenu(event))

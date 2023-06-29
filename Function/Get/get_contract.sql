@@ -1,3 +1,10 @@
+CREATE TYPE employee_sn AS (
+  e_surname varchar(20),
+  e_name varchar(20)
+);
+
+DROP FUNCTION get_contract(page_num integer);
+
 CREATE OR REPLACE FUNCTION get_contract(page_num integer)
 RETURNS TABLE (
 	contrid integer,
@@ -5,7 +12,7 @@ RETURNS TABLE (
     date_of_payment date,
     cost_of_object int,
 	contact_type varchar(20),
-    employee_surname varchar(20),
+    employee_fi employee_sn,
 	owner_surname varchar(20),
     owner_name varchar(20),
     client_surname varchar(20),
@@ -13,7 +20,7 @@ RETURNS TABLE (
 ) AS $$
 BEGIN
     RETURN QUERY
-		SELECT contr."ContractID", contr."DateOfContract", contr."DateOfPayment", contr."CostOfObject", contr."ContractType", empl."Surname",  pco."Surname", pco."Name", pcc."Surname", pcc."Name" 
+		SELECT contr."ContractID", contr."DateOfContract", contr."DateOfPayment", contr."CostOfObject", contr."ContractType", ROW(empl."Surname", empl."Name")::employee_sn,  pco."Surname", pco."Name", pcc."Surname", pcc."Name" 
         FROM "Contract" contr
         JOIN "Employee" empl ON contr."EmployeeID" = empl."EmployeeID"
         JOIN "PassportClient" pco ON contr."OwnerPassportNumber" = pco."PassportNumber"

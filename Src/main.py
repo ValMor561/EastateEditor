@@ -1,7 +1,11 @@
 from AuthWindow import Auth
 import ttkbootstrap as ttk
 
-root = ttk.Window(themename="superhero")
-root.geometry('1920x1080')
-Auth(root)
-root.mainloop()
+def main(): 
+    root = ttk.Window(themename="superhero")
+    root.geometry('1920x1080')
+    Auth(root)
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
