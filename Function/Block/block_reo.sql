@@ -1,0 +1,6 @@
+CREATE OR REPLACE FUNCTION block_reo(p_id INTEGER)
+RETURNS VOID AS $$
+BEGIN
+PERFORM * FROM "RealEastateObject" WHERE "ObjectId"=p_id FOR UPDATE;
+END;
+$$ LANGUAGE plpgsql;	

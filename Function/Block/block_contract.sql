@@ -1,0 +1,6 @@
+CREATE OR REPLACE FUNCTION block_contract(p_id INTEGER)
+RETURNS VOID AS $$
+BEGIN
+PERFORM * FROM "Contract" WHERE "ContractID"=p_id FOR UPDATE;
+END;
+$$ LANGUAGE plpgsql;	

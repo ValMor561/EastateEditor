@@ -4,7 +4,7 @@ from bdrequests import BDRequests
 from datetime import datetime
 
 class EditOrAddForm(tk.Toplevel):
-    def __init__(self, row_values, updatefunction, addfunction):
+    def __init__(self, row_values, updatefunction, addfunction, blockfunction):
         super().__init__()
         self.resizable(width=False, height=False)
         self.title("Форма Изменения/Добавления")
@@ -12,7 +12,9 @@ class EditOrAddForm(tk.Toplevel):
         self.values = row_values[1:]
         self.updatefunction = updatefunction
         self.addfunction = addfunction
+        self.blockfunction = blockfunction
         self.BD = BDRequests()
+        self.BD.block_data(self.blockfunction,self.id)
         self.entries = []
     
     def Contract(self):

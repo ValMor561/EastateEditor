@@ -42,6 +42,11 @@ class BDRequests():
         self.conn.commit()
         cur.close()
 
+    def block_data(self, function, id):
+        cur = self.conn.cursor()
+        cur.callproc(function, [id])
+        cur.close()
+
     def edit_data(self, function, id, values):
         cur = self.conn.cursor()
         cur.callproc(function, [id] + values)
